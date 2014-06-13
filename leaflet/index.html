@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Water Quality Portal Web Map</title>
+    <link rel="stylesheet" href="css/leaflet.css" />
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="css/leaflet.ie.css" />
+    <![endif]-->
+    
+    <script src="js/leaflet.js"></script>
+    <style type="text/css">
+      html, body, #map {
+        margin: 0px;
+        height: 100%;
+        width: 100%;
+      }
+	  
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    
+    <script src="js/jquery-1.10.1.min.js"></script>
+    <script src="js/L.TileLayer.BetterWMS.js"></script>
+    <script>
+      var map = L.map('map', {
+        center: [44.095475729465, -84.388916015626],
+        zoom: 4,
+		zoomControl: true
+      });
+      
+	  L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+			maxZoom: 18,
+			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+			id: 'examples.map-20v6611k'
+		}).addTo(map);
+	  
+	  var url='http://cida-eros-wqpqa.er.usgs.gov:8080/wmsproxy/wms';
+	 
+	  L.tileLayer.betterWms(url, {
+		layers: 'wqp_sites',
+		query_layers: 'wqp_sites',
+        format: 'image/png',
+		styles: 'wqp_sites',
+		searchParams:'countrycode:US;characteristicName:Atrazine',
+        transparent: true
+      }).addTo(map);     
+	  
+    </script>
+  </body>
+</html>
